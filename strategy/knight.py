@@ -5,6 +5,7 @@ from game.position import Position
 from strategy.strategy import Strategy
 from game.character_class import CharacterClass
 from util.utility import *
+import random 
 
 class Knight(Strategy):    
 
@@ -50,6 +51,9 @@ class Knight(Strategy):
     def strategy_initialize(self, my_player_index: int):# -> None:
         self.centerlist = [(4,4), (4,5), (5,4), (5,5)]
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
+        self.status = "moving"
+        self.move_order = ['lr', 'lr', 'ud', 'ud']
+        self.move_idx = 0
         return CharacterClass.KNIGHT
 
     def use_action_decision(self, game_state: GameState, my_player_index: int):# -> bool:
@@ -64,45 +68,28 @@ class Knight(Strategy):
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
         if self.isInSpawn(game_state,my_player_index) and self.myState(game_state, my_player_index).gold >= 8:
             return self.spawnlist[my_player_index]
-        
-        curr_state = self.myState(game_state, my_player_index)
-        curr_position = curr_state.position
-        curr_speed = curr_state.stat_set.speed
-        
-        # curr_health = curr_state.health
-        # curr_item = curr_state.item
-        # curr_range = curr_state.stat_set.range 
-        # curr_damage = curr_state.stat_set.damage
-        
-        centers_x = [4, 5, 4, 5]
-        centers_y = [4, 4, 5, 5]
-        # centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
-        
-        x = curr_position.x
-        y = curr_position.y
-        direction_x = [1, -1, -1, 1]
-        direction_y = [1, 1, -1, -1]
-        
-        goal_x = centers_x[my_player_index]
-        goal_y = centers_y[my_player_index]
-        
-        enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
-        other_postions = [enemy.position for enemy in enemies]
-        
-        if curr_position.x in centers_x and curr_position.y in centers_y:
-            # not move
-            return curr_position
+        if isInCenter(game_state.player_state_list[my_player_index]):
+            self.status = "holding"
+            self.move_idx = 0
+        if self.status == "moving":
+            if self.move_idx == 0:
+                random.shuffle(self.move_order)
+            
+            curr_pos = game_state.player_state_list[my_player_index].position
+            dx = -2 if curr_pos.x > 4.5 else 2 
+            dy = -2 if curr_pos.y > 4.5 else 2 
+            
+            dir = self.move_order[self.move_idx]
+            self.move_idx = self.move_idx + 1
+            if dir == 'ud': # move up/down
+                return Position(x, y+dy)
+            if dir == 'lr':
+                return Position(x+dx, y)
         else:
-            # find next move to the goal
-            move_x = 1 if goal_x > x else -1
-            move_y = 1 if goal_y > y else -1
-            step_x = random_enum(list(range(curr_speed+1)))
-            step_y = curr_speed - step_x
-            x = x + move_x*step_x
-            y = y + move_y*step_y
-            return Position(x, y)
+            return random.choice([Position(4,4), Position(4,5), Position(5,4), Position(5,5)])
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int):# -> int:
+
         state = self.myState(game_state, my_player_index)
         playerlist = game_state.player_state_list
         #lowest_hp = 10

@@ -27,7 +27,7 @@ class Knight(Strategy):
 
     '''check whether or not the given player is in center'''
     def isInCenter(self, ps:PlayerState):# -> bool:
-        if ps.position in self.centerlist:
+        if (ps.position.x, ps.position.y) in self.centerlist:
             return True
         return False
 
@@ -48,7 +48,8 @@ class Knight(Strategy):
         return False
     
     def strategy_initialize(self, my_player_index: int):# -> None:
-        self.centerlist = [Position(4,4),Position(4,5),Position(5,4),Position(5,5)]
+        self.centerlist = [(4,4), (4,5), (5,4), (5,5)]
+        self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
         return CharacterClass.KNIGHT
 
     def use_action_decision(self, game_state: GameState, my_player_index: int):# -> bool:
@@ -61,6 +62,9 @@ class Knight(Strategy):
         return False
 
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
+        if self.isInSpawn(game_state,my_player_index) and self.myState(game_state, my_player_index).gold >= 8:
+            return self.spawnlist[my_player_index]
+        
         curr_state = self.myState(game_state, my_player_index)
         curr_position = curr_state.position
         curr_speed = curr_state.stat_set.speed

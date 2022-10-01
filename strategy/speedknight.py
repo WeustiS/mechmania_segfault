@@ -12,18 +12,7 @@ class SpeedKnight(Strategy):
     '''check if at the spawn point'''
     def isInSpawn(self,game_state:GameState, my_player_index:int):# -> bool:
         state = self.myState(game_state,my_player_index)
-        if my_player_index == 0:
-            if state.position.x == 0 and state.position.y == 0:
-                return True
-        elif my_player_index == 1:
-            if state.position.x == 9 and state.position.y == 0:
-                return True
-        elif my_player_index == 2:
-            if state.position.x == 9 and state.position.y == 9:
-                return True
-        else:
-            if state.position.x == 0 and state.position.y == 9:
-                return True
+        return (state.position.x == 0 and state.position.y == 0) or (state.position.x == 9 and state.position.y == 0) or (state.position.x == 0 and state.position.y == 9) or (state.position.x == 9 and state.position.y == 9)
         return False    
 
     '''check whether or not the given player is in center'''
@@ -52,7 +41,7 @@ class SpeedKnight(Strategy):
         self.centerlist = [(4,4), (4,5), (5,4), (5,5)]
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
         self.status = "moving"
-        self.move_order = ['lr', 'lr', 'ud', 'ud']
+        self.move_order = ['lr',  'ud', 'lr', 'ud']
         self.move_idx = 0
         return CharacterClass.KNIGHT
 
@@ -81,8 +70,6 @@ class SpeedKnight(Strategy):
             self.status = "holding"
             self.move_idx = 0
         if self.status == "moving":
-            if self.move_idx == 0:
-                random.shuffle(self.move_order)
             
             curr_pos = game_state.player_state_list[my_player_index].position
             dx = -2 if curr_pos.x > 4.5 else 2 
@@ -91,7 +78,7 @@ class SpeedKnight(Strategy):
             dir = self.move_order[self.move_idx]
             self.move_idx = self.move_idx + 1
             if self.move_idx == 2 and self.fast:
-                return Position(4,4)
+                return Position(curr_pos+dx, curr_pos.y+dy)
             if dir == 'ud': # move up/down
                 return Position(curr_pos.x, curr_pos.y+dy)
             

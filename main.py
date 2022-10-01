@@ -126,14 +126,12 @@ def main():
     if phase == Phase.ATTACK :
       attack_action = AttackAction(player_index, strategy.attack_action_decision(game_state, player_index))
       client.write(jsonpickle.encode(attack_action, unpicklable=False))
-      print('buy phase')
       phase = Phase.BUY
       continue
     if phase == Phase.BUY :
       
       buy_action = BuyAction(player_index, strategy.buy_action_decision(game_state, player_index))
       client.write(jsonpickle.encode(buy_action, unpicklable=False))
-      print("buy")
       phase = Phase.USE
       
   client.disconnect()

@@ -43,10 +43,10 @@ class SpeedKnight(Strategy):
         
         self.status = "moving"
         self.approaches = [
-            ('lr', 'd', 'ud', 'd'),
-                           ('lr', 'lr', 'ud', 'ud'),
-                           ('lr', 'ud', 'lr', 'ud')
-                           ]
+            ['lr', 'd', 'ud', 'd'   ],
+            ['lr', 'lr', 'ud', 'ud' ],
+            ['lr', 'ud', 'lr', 'ud' ]
+        ]
         
         self.approach_idx = 0 
         self.move_idx = 0
@@ -110,12 +110,10 @@ class SpeedKnight(Strategy):
                 return Position(curr_pos.x+dx, curr_pos.y+dy)
             
             self.move_idx = self.move_idx + 1
-            if dir == 'ud': # move up/down
-                return Position(curr_pos.x, curr_pos.y+dy)
+                
+            return Position(curr_pos.x+dx, curr_pos.y+dy)
             
-            if dir == 'lr':
-                return Position(curr_pos.x+dx, curr_pos.y)
-            
+
             
         else:
             return random.choice([Position(4,4), Position(4,5), Position(5,4), Position(5,5)])

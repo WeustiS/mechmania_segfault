@@ -110,11 +110,7 @@ class Knight(Strategy):
                 return Position(curr_pos.x+dx, curr_pos.y+dy)
             
             self.move_idx = self.move_idx + 1
-            if dir == 'ud': # move up/down
-                return Position(curr_pos.x, curr_pos.y+dy)
-            
-            if dir == 'lr':
-                return Position(curr_pos.x+dx, curr_pos.y)
+            return Position(curr_pos.x+dx, curr_pos.y+dy)
             
             
         else:

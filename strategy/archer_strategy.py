@@ -11,31 +11,37 @@ from strategy.strategy import Strategy
 
 from util.utility import * 
 
-class StarterStrategy(Strategy):
+class ArcherStrategy(Strategy):
     def strategy_initialize(self, my_player_index: int):
         self.aggressiveness = 0
         self.target = None
         self.last_player_positions = [None, None, None, None]
+        self.spawn_coords = [
+            Position(0,0),
+            Position(0,9),
+            Position(9,9),
+            Position(9,0)
+        ]
         return game.character_class.CharacterClass.ARCHER
 
     def move_action_decision(self, game_state: GameState, my_player_index: int): # -> Position:
         if self.last_player_positions[0] is None:
-            self.last_player_positions = [(x.position.x, x.positions.y) for x in game_state]
+            self.last_player_positions = [(x.position.x, x.position.y) for x in game_state.player_state_list]
         
-        current_player_positions = [(x.position.x, x.positions.y) for x in game_state]
+        current_player_positions = [(x.position.x, x.position.y) for x in game_state.player_state_list]
         predicted_player_positions = [
             (
-                max(0, min(9, self.predicted_player_positions[i][0]-self.last_player_positions[i][0])), 
-                max(0, min(9, self.predicted_player_positions[i][1]-self.last_player_positions[i][1]))
+                max(0, min(9, current_player_positions[i][0]-self.last_player_positions[i][0])), 
+                max(0, min(9, current_player_positions[i][1]-self.last_player_positions[i][1]))
             )
-            for i, x in enumerate(game_state) 
+            for i, x in enumerate(game_state.player_state_list) 
         ]
             
         # check if center is safe- if so, go there
         # TODO
         # check for low HP enemy/chase
-        my = game_state[my_player_index]
-        other_players = [x for i, x in game_state if i != my_player_index]
+        my = game_state.player_state_list[my_player_index]
+        other_players = [x for i, x in enumerate(game_state.player_state_list) if i != my_player_index]
         players_to_target = set()
         # find targets based on current HP
         for p_idx, player in enumerate(other_players):
@@ -46,7 +52,7 @@ class StarterStrategy(Strategy):
         # if no targets find lowest HP
         if len(players_to_target) == 0:
             player_hps = [x.health for x in other_players]
-            players_to_target.add(player_hps.index(min(players_to_target)))
+            players_to_target.add(player_hps.index(min(player_hps)))
         
         # randomly choose a plyer to target from list
         target = random.choice(tuple(players_to_target))
@@ -59,8 +65,8 @@ class StarterStrategy(Strategy):
         viable_sqaures = []
         for dx in range(-ideal_distance, ideal_distance):
             for dy in range(-ideal_distance, ideal_distance):
-                pos_query = Position(target_predicted_loc[0]+dy, target_predicted_loc+dx)
-                if in_bounds(pos_query) and chebyshev_distance(pos_query, target_predicted_loc) ==ideal_distance:
+                pos_query = Position(target_predicted_loc[0]+dy, target_predicted_loc[1]+dx)
+                if in_bounds(pos_query) and chebyshev_distance(pos_query, Position(target_predicted_loc[0], target_predicted_loc[1])) ==ideal_distance:
                     viable_sqaures.append(pos_query)
         
         if len(viable_sqaures) == 0:
@@ -68,20 +74,24 @@ class StarterStrategy(Strategy):
                 if chebyshev_distance(center_sq, my.position) <= my.stat_set.speed:
                     self.target = None
                     return center_sq
-            
+
+        if my.gold >= 7 and my.item == Item.NONE:
+            return self.spawn_coords[my_player_index]
         return random.choice(viable_sqaures)
 
     
     def attack_action_decision(self, game_state: GameState, my_player_index: int):# -> int:
         # set last positions
-        other_players = [x for i, x in game_state if i != my_player_index]
-        my = game_state[my_player_index]
+        other_players = [x for i, x in enumerate(game_state.player_state_list) if i != my_player_index]
+        self.last_player_positions = [(x.position.x, x.position.y) for x in game_state.player_state_list]
+        
+        my = game_state.player_state_list[my_player_index]
         if self.target is not None: # increase aggressiveness if we miss our target  
             if chebyshev_distance(other_players[self.target], my.position) < my.stat_set.range: 
                 self.aggressiveness = self.aggressiveness + 1 
         
         viable_targets = []
-        for i, player in enumerate(game_state):
+        for i, player in enumerate(game_state.player_state_list):
             if chebyshev_distance(player.position, my.position) < my.stat_set.range: 
                 viable_targets.append((i, player))
         
@@ -102,6 +112,10 @@ class StarterStrategy(Strategy):
 
 
     def buy_action_decision(self, game_state: GameState, my_player_index: int):# -> Item:
+        return Item.NONE
+        my = game_state.player_state_list[my_player_index]
+        if my.gold >= 8 and my.position == self.spawn_coords[my_player_index]:
+            return Item.RALLY_BANNER
         return Item.NONE
 
     def use_action_decision(self, game_state: GameState, my_player_index: int):# -> bool:

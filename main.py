@@ -97,7 +97,6 @@ def main():
   while(True):
 
     data = client.read()
-    
     if (data.startswith("fin")) :
       break
     
@@ -108,8 +107,8 @@ def main():
     except json.JSONDecodeError as e:
       logging.warn(e)
     
-    if game_state is None:
-      return
+    # if game_state is None:
+    #   return
 
     if phase == Phase.USE :
       logging.info("Turn: " + str(game_state.turn))
@@ -122,6 +121,7 @@ def main():
       move_action = MoveAction(player_index, strategy.move_action_decision(game_state, player_index))
       client.write(jsonpickle.encode(move_action, unpicklable=False))
       phase = Phase.ATTACK
+      
       continue
     if phase == Phase.ATTACK :
       attack_action = AttackAction(player_index, strategy.attack_action_decision(game_state, player_index))
@@ -129,6 +129,7 @@ def main():
       phase = Phase.BUY
       continue
     if phase == Phase.BUY :
+      
       buy_action = BuyAction(player_index, strategy.buy_action_decision(game_state, player_index))
       client.write(jsonpickle.encode(buy_action, unpicklable=False))
       phase = Phase.USE

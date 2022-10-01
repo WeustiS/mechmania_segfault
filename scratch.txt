@@ -19,6 +19,13 @@ Archer - Steal Kills w/ Dmg Banner
 - Items - Get DMG Banner, save $?
 
 
+Wizard - Speed or Range (5 every 5 )
+- Movement
+    - Keep center in range, keep out of enemy  range
+    - Move to squares with low expected damage
+
+
+
 Knight - Surive in center ( or use scope) (or use speed potion/healing)
  - Movement
     - Towards center 

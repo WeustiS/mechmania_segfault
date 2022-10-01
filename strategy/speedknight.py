@@ -120,7 +120,7 @@ class SpeedKnight(Strategy):
 
             
         else:
-            return my.position
+            return Position(self.centerlist[my_player_index])
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int):# -> int:
 

@@ -82,9 +82,9 @@ class Knight(Strategy):
             dir = self.move_order[self.move_idx]
             self.move_idx = self.move_idx + 1
             if dir == 'ud': # move up/down
-                return Position(x, y+dy)
+                return Position(curr_pos.x, curr_pos.y+dy)
             if dir == 'lr':
-                return Position(x+dx, y)
+                return Position(curr_pos.x+dx, curr_pos.y)
         else:
             return random.choice([Position(4,4), Position(4,5), Position(5,4), Position(5,5)])
 

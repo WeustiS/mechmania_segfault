@@ -70,9 +70,9 @@ class Knight(Strategy):
         # curr_range = curr_state.stat_set.range 
         # curr_damage = curr_state.stat_set.damage
         
-        centers_x = [5, 4, 4, 5]
-        centers_y = [5, 5, 4, 4]
-        centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
+        centers_x = [4, 5, 4, 5]
+        centers_y = [4, 4, 5, 5]
+        # centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
         
         x = curr_position.x
         y = curr_position.y
@@ -84,8 +84,9 @@ class Knight(Strategy):
         
         enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
         other_postions = [enemy.position for enemy in enemies]
-
-        if curr_position.x == centers_x.x[my_player_index] and centers_y.y[my_player_index]:
+        
+        if curr_position.x in centers_x and curr_position.y in centers_y:
+            # not move
             return curr_position
         else:
             # find next move to the goal

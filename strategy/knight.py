@@ -42,11 +42,15 @@ class Knight(Strategy):
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
         
         self.status = "moving"
-        self.approaches = (
+        self.approaches = [
             ['lr', 'd', 'ud', 'd'],
-                           ['lr', 'lr', 'ud', 'ud'],
-                           ['lr', 'ud', 'lr', 'ud']
-        )
+            ['ud', 'd', 'lr', 'd'],
+            ['d', 'ud', 'd', 'lr'],
+            ['d', 'lr', 'd', 'up'],
+            ['lr', 'lr', 'ud', 'ud' ],
+            ['lr', 'ud', 'lr', 'ud' ]
+        ]
+        
         
         self.approach_idx = random.randint(0,2)
         self.move_idx = 0
@@ -71,7 +75,7 @@ class Knight(Strategy):
             self.status = "moving"
             self.move_idx = 0
             if self.got_hit:
-                self.approach_idx = (self.approach_idx + 1)%3
+                self.approach_idx = (self.approach_idx + 1)%6
             self.got_hit = False
             
         if self.isInCenter(game_state.player_state_list[my_player_index]):
@@ -115,7 +119,7 @@ class Knight(Strategy):
             
             
         else:
-            return random.choice([Position(4,4), Position(4,5), Position(5,4), Position(5,5)])
+            return my.position
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int):# -> int:
 

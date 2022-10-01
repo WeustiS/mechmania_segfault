@@ -91,7 +91,7 @@ class Knight(Strategy):
             # find next move to the goal
             move_x = 1 if goal_x > x else -1
             move_y = 1 if goal_y > y else -1
-            step_x = random_enum(list([range(curr_speed+1)]))
+            step_x = random_enum(list(range(curr_speed+1)))
             step_y = curr_speed - step_x
             x = x + move_x*step_x
             y = y + move_y*step_y

@@ -43,12 +43,12 @@ class SpeedKnight(Strategy):
         
         self.status = "moving"
         self.approaches = [
-            ['lr', 'd', 'ud', 'd'   ],
+            ['lr', 'd', 'ud', 'd'],
             ['lr', 'lr', 'ud', 'ud' ],
             ['lr', 'ud', 'lr', 'ud' ]
         ]
         
-        self.approach_idx = 0 
+        self.approach_idx = random.randint(0,2)
         self.move_idx = 0
         self.got_hit = False
         return CharacterClass.KNIGHT
@@ -96,7 +96,7 @@ class SpeedKnight(Strategy):
                 dx = -2 if curr_pos.x > 4.5 else 2 
             if dir == 'd':
                 dx = -1 if curr_pos.x > 4.5 else 1 
-                dx = -1 if curr_pos.x > 4.5 else 1 
+                dy = -1 if curr_pos.x > 4.5 else 1 
             
             if self.move_idx == 2 and self.fast:
                 next_dir = self.approaches[self.approach_idx][self.move_idx+1]
@@ -106,7 +106,7 @@ class SpeedKnight(Strategy):
                     dx += -2 if curr_pos.x > 4.5 else 2 
                 if next_dir == 'd':
                     dx += -1 if curr_pos.x > 4.5 else 1 
-                    dx += -1 if curr_pos.x > 4.5 else 1 
+                    dy += -1 if curr_pos.x > 4.5 else 1 
                 
                 return Position(curr_pos.x+dx, curr_pos.y+dy)
             

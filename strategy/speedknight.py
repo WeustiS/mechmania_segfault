@@ -79,7 +79,7 @@ class SpeedKnight(Strategy):
             
             if self.move_idx == 2 and self.fast:
                 # print(my.stat_set.speed)
-                return Position(curr_pos+dx, curr_pos.y+dy)
+                return Position(curr_pos.x+dx, curr_pos.y+dy)
             self.move_idx = self.move_idx + 1
             if dir == 'ud': # move up/down
                 return Position(curr_pos.x, curr_pos.y+dy)

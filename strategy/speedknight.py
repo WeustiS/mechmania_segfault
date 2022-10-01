@@ -40,16 +40,21 @@ class SpeedKnight(Strategy):
     def strategy_initialize(self, my_player_index: int):# -> None:
         self.centerlist = [(4,4), (4,5), (5,4), (5,5)]
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
+        
         self.status = "moving"
-        self.move_order = ['lr',  'ud', 'lr', 'ud']
+        self.approaches = [
+            ('lr', 'd', 'ud', 'd'),
+                           ('lr', 'lr', 'ud', 'ud'),
+                           ('lr', 'ud', 'lr', 'ud')
+                           ]
+        
+        self.approach_idx = 0 
         self.move_idx = 0
+        self.got_hit = False
         return CharacterClass.KNIGHT
 
     def use_action_decision(self, game_state: GameState, my_player_index: int):# -> bool:
         state = self.myState(game_state,my_player_index)
-        #if state.item == Item.SPEED_POTION:
-        #    if self.otherKnight(game_state, my_player_index):
-        #        return True
         if state.item == Item.HUNTER_SCOPE:
             return False
         if state.item == Item.SPEED_POTION and self.move_idx == 2:
@@ -65,21 +70,45 @@ class SpeedKnight(Strategy):
                 return self.spawnlist[my_player_index]
             self.status = "moving"
             self.move_idx = 0
+            if self.got_hit:
+                self.approach_idx = (self.approach_idx + 1)%3
+            self.got_hit = False
             
         if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"
             self.move_idx = 0
+        if self.move_idx <= 2 and my.health< my.stat_set.max_health:
+            self.got_hit = True
+            # self.approach_idx = (self.approach_idx + 1)%3
+            
         if self.status == "moving":
             
             curr_pos = game_state.player_state_list[my_player_index].position
-            dx = -2 if curr_pos.x > 4.5 else 2 
-            dy = -2 if curr_pos.y > 4.5 else 2 
+            dx = 0
+            dy = 0
             
-            dir = self.move_order[self.move_idx]
+            dir = self.approaches[self.approach_idx][self.move_idx]
+            
+            if dir == 'ud':
+                dy = -2 if curr_pos.y > 4.5 else 2 
+            if dir == 'lr':
+                dx = -2 if curr_pos.x > 4.5 else 2 
+            if dir == 'd':
+                dx = -1 if curr_pos.x > 4.5 else 1 
+                dx = -1 if curr_pos.x > 4.5 else 1 
             
             if self.move_idx == 2 and self.fast:
-                # print(my.stat_set.speed)
+                next_dir = self.approaches[self.approach_idx][self.move_idx+1]
+                if next_dir == 'ud':
+                    dy += -2 if curr_pos.y > 4.5 else 2 
+                if next_dir == 'lr':
+                    dx += -2 if curr_pos.x > 4.5 else 2 
+                if next_dir == 'd':
+                    dx += -1 if curr_pos.x > 4.5 else 1 
+                    dx += -1 if curr_pos.x > 4.5 else 1 
+                
                 return Position(curr_pos.x+dx, curr_pos.y+dy)
+            
             self.move_idx = self.move_idx + 1
             if dir == 'ud': # move up/down
                 return Position(curr_pos.x, curr_pos.y+dy)
@@ -103,15 +132,9 @@ class SpeedKnight(Strategy):
             if i == my_player_index:
                 continue
             if chebyshev_distance(state.position,player.position) <= state.stat_set.range:
-                #if playerlist[i].health < lowest_hp:
-                #    lowest_hp = playerlist[i].health
-                #    index_hp = i
                 if player.score > highest_sc:
                     highest_sc = player.score
                     index_sc = i
-        #if playerlist[index_hp] <= state.stat_set.damage:
-        #    return index_hp
-        #else:
         return index_sc
 
     def buy_action_decision(self, game_state: GameState, my_player_index: int):# -> Item:

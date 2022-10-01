@@ -1,0 +1,47 @@
+Knight Speed Potion- Rush center
+Knight Dex Potion - Anti Wizard
+Knight Shield - 
+Wizard Str Potion - Kill Anyone
+Wizard Banner - Anti Wizard
+Archer Shield - Center Survival
+Archer Str Potion - 
+
+
+
+Archer - Steal Kills w/ Dmg Banner
+- Movement
+    - If you can end turn on center, do it.
+    - Avoid death squares 
+    - If there is a low HP enemy chase and Kill
+    - Attack someone in center
+- Attack
+    - Lowest HP 
+- Items - Get DMG Banner, save $?
+
+
+Knight - Surive in center ( or use scope) (or use speed potion/healing)
+ - Movement
+    - Towards center 
+    - Avoid targeted squares (if center = death, leave center)
+    - If low HP, if item then spawn. Else take someone with you 
+    * if no other knights, dont use speed potions save/extra range
+ - Attack
+    - Most likely to die ( check other ranges)
+- Items
+    - if other knights, speed potion (after 2 speed potion runs, calculate )
+    - else hunting scope (then save)
+
+    
+** if low HP and no $- what to do?  (avoid then die on correct round)
+Early Rounds such center as archer
+
+If choice between target - prioritize higher score 
+
+Movement Cases:
+- Moving to center
+- Teleporting to spawn
+- Chasing enemy
+- Avoiding enemy 
+
+
+If knight an

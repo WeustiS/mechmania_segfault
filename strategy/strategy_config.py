@@ -11,6 +11,10 @@ from strategy.knight import Knight
 
 :returns: A Strategy object.
 """
-def get_strategy(player_index: int) -> Strategy:  
-  return SpeedKnight()
+def get_strategy(player_index: int) -> Strategy:
+  if player_index == 0 or player_index == 1:  
+    return SpeedKnight()
+  else:
+    return Knight()
+  
 

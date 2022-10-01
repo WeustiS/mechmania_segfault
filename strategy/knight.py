@@ -7,13 +7,13 @@ from game.character_class import CharacterClass
 from util.utility import *
 import random 
 
-class SpeedKnight(Strategy):    
+class Knight(Strategy):    
 
     '''check if at the spawn point'''
     def isInSpawn(self,game_state:GameState, my_player_index:int):# -> bool:
         state = self.myState(game_state,my_player_index)
         return (state.position.x == 0 and state.position.y == 0) or (state.position.x == 9 and state.position.y == 0) or (state.position.x == 0 and state.position.y == 9) or (state.position.x == 9 and state.position.y == 9)
-        return False    
+    
 
     '''check whether or not the given player is in center'''
     def isInCenter(self, ps:PlayerState):# -> bool:

@@ -64,7 +64,7 @@ class SpeedKnight(Strategy):
             if my.gold >= 5 and my.item == Item.NONE:
                 return self.spawnlist[my_player_index]
             self.status = "moving"
-            self.move_idx == 0
+            self.move_idx = 0
             
         if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"

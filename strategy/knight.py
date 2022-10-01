@@ -68,7 +68,7 @@ class Knight(Strategy):
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
         if self.isInSpawn(game_state,my_player_index) and self.myState(game_state, my_player_index).gold >= 8:
             return self.spawnlist[my_player_index]
-        if isInCenter(game_state.player_state_list[my_player_index]):
+        if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"
             self.move_idx = 0
         if self.status == "moving":
@@ -82,9 +82,9 @@ class Knight(Strategy):
             dir = self.move_order[self.move_idx]
             self.move_idx = self.move_idx + 1
             if dir == 'ud': # move up/down
-                return Position(x, y+dy)
+                return Position(curr_pos.x, curr_pos.y+dy)
             if dir == 'lr':
-                return Position(x+dx, y)
+                return Position(curr_pos.x+dx, curr_pos.y)
         else:
             return random.choice([Position(4,4), Position(4,5), Position(5,4), Position(5,5)])
 

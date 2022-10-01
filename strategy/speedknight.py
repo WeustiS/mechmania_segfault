@@ -71,9 +71,12 @@ class SpeedKnight(Strategy):
 
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
         my = game_state.player_state_list[my_player_index]
-        if self.isInSpawn(game_state,my_player_index) and my.gold >= 5 and my.item == Item.NONE:
+        if self.isInSpawn(game_state,my_player_index):
+            if my.gold >= 5 and my.item == Item.NONE:
+                return self.spawnlist[my_player_index]
             self.status = "moving"
-            return self.spawnlist[my_player_index]
+            self.move_idx == 0
+            
         if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"
             self.move_idx = 0

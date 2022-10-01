@@ -38,7 +38,7 @@ class Knight(Strategy):
         return False
     
     def strategy_initialize(self, my_player_index: int):# -> None:
-        self.centerlist = [(4,4), (4,5), (5,4), (5,5)]
+        self.centerlist = [(4,4), (5,4), (5,5), (4,5)]
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
         
         self.status = "moving"

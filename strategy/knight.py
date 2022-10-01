@@ -74,6 +74,7 @@ class Knight(Strategy):
         centers_y = [4, 4, 5, 5]
         # centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
         
+        
         x = curr_position.x
         y = curr_position.y
         direction_x = [1, -1, -1, 1]
@@ -85,17 +86,30 @@ class Knight(Strategy):
         enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
         other_postions = [enemy.position for enemy in enemies]
         
+        moves = [1, -1, ]
+
         if curr_position.x in centers_x and curr_position.y in centers_y:
             # not move
+
             return curr_position
         else:
             # find next move to the goal
-            move_x = 1 if goal_x > x else -1
-            move_y = 1 if goal_y > y else -1
-            step_x = random_enum(list(range(curr_speed+1)))
+            if goal_x > x:
+                step_x = random_enum([0,2])
+            elif goal_x < x:
+                step_x = random_enum([0,-2])
+            else:
+                move_x = 0
+            if goal_y > y:
+                move_y = 1
+            elif goal_y < y:
+                move_y = -1
+            else:
+                move_y = 0
+            
             step_y = curr_speed - step_x
-            x = x + move_x*step_x
-            y = y + move_y*step_y
+            x = x + step_x
+            y = y + step_y
             return Position(x, y)
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int) -> int:

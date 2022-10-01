@@ -62,7 +62,24 @@ class Knight(Strategy):
         return False
 
     def move_action_decision(self, game_state: GameState, my_player_index: int) -> Position:
-        pass
+        curr_state = self.myState(game_state, my_player_index)
+        curr_position = curr_state.position
+        centers_x = [4, 5, 5, 4]
+        centers_y = [4, 4, 5, 5]
+        centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
+        
+        x = curr_position.x
+        y = curr_position.y
+        direction_x = [1, -1, -1, 1]
+        direction_y = [1, 1, -1, -1]
+        
+        enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
+        other_postions = [enemy.position for enemy in enemies]
+
+        if curr_position in centers:
+            return curr_position
+        else:
+            return(Position(x+direction_x[my_player_index], y+direction_y[my_player_index]))
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int) -> int:
         state = self.myState(game_state, my_player_index)
@@ -71,15 +88,15 @@ class Knight(Strategy):
         #index_hp = 0
         highest_sc = 0
         index_sc = 0
-        for i in playerlist:
+        for i, player in enumerate(playerlist):
             if i == my_player_index:
                 continue
-            if chebyshev_distance(state.position,playerlist[i].position) <= state.stat_set.range:
+            if chebyshev_distance(state.position,player.position) <= state.stat_set.range:
                 #if playerlist[i].health < lowest_hp:
                 #    lowest_hp = playerlist[i].health
                 #    index_hp = i
-                if playerlist[i].score > highest_sc:
-                    highest_sc = playerlist[i].score
+                if player.score > highest_sc:
+                    highest_sc = player.score
                     index_sc = i
         #if playerlist[index_hp] <= state.stat_set.damage:
         #    return index_hp

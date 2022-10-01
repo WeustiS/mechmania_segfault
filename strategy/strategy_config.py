@@ -12,5 +12,5 @@ from strategy.knight import Knight
 :returns: A Strategy object.
 """
 def get_strategy(player_index: int) -> Strategy:  
-  return SpeedKnight()
+  return Knight()
 

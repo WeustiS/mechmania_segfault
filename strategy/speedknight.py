@@ -58,6 +58,8 @@ class SpeedKnight(Strategy):
         state = self.myState(game_state,my_player_index)
         if state.item == Item.HUNTER_SCOPE:
             return False
+        if self.isInSpawn(game_state,my_player_index):
+            self.move_idx = 0
         if state.item == Item.SPEED_POTION and self.move_idx == 2:
             self.fast = True
             return True

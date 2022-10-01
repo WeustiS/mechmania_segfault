@@ -7,7 +7,7 @@ from game.character_class import CharacterClass
 from util.utility import *
 import random 
 
-class SpeedKnight(Strategy):    
+class Knight(Strategy):    
 
     '''check if at the spawn point'''
     def isInSpawn(self,game_state:GameState, my_player_index:int):# -> bool:

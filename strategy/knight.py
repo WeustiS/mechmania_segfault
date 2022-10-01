@@ -66,7 +66,9 @@ class Knight(Strategy):
         return False
 
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
-        if self.isInSpawn(game_state,my_player_index) and self.myState(game_state, my_player_index).gold >= 8:
+        my = game_state.player_state_list[my_player_index]
+        if self.isInSpawn(game_state,my_player_index) and my.gold >= 8 and my.item == Item.NONE:
+            self.status = "moving"
             return self.spawnlist[my_player_index]
         if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"
@@ -94,7 +96,7 @@ class Knight(Strategy):
         playerlist = game_state.player_state_list
         #lowest_hp = 10
         #index_hp = 0
-        highest_sc = 0
+        highest_sc = -1
         index_sc = 0
         for i,player in enumerate(playerlist):
             if i == my_player_index:

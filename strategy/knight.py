@@ -42,7 +42,7 @@ class Knight(Strategy):
         self.spawnlist = [Position(0,0), Position(9, 0), Position(9,9), Position(0,9)]
         
         self.status = "moving"
-         self.approaches = [
+        self.approaches = [
             ['lr', 'd', 'ud', 'd'],
             ['ud', 'd', 'lr', 'd'],
             ['d', 'ud', 'd', 'lr'],

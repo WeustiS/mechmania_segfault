@@ -44,6 +44,7 @@ class SpeedKnight(Strategy):
         self.status = "moving"
         self.approaches = [
             ['lr', 'd', 'ud', 'd'],
+            ['ud', 'd', 'lr', 'd'],
             ['lr', 'lr', 'ud', 'ud' ],
             ['lr', 'ud', 'lr', 'ud' ]
         ]

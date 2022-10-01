@@ -70,9 +70,9 @@ class Knight(Strategy):
         # curr_range = curr_state.stat_set.range 
         # curr_damage = curr_state.stat_set.damage
         
-        centers_x = [5, 4, 4, 5]
-        centers_y = [5, 5, 4, 4]
-        centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
+        centers_x = [4, 5, 4, 5]
+        centers_y = [4, 4, 5, 5]
+        # centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
         
         x = curr_position.x
         y = curr_position.y
@@ -84,14 +84,15 @@ class Knight(Strategy):
         
         enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
         other_postions = [enemy.position for enemy in enemies]
-
-        if curr_position == centers[my_player_index] :
+        
+        if curr_position.x in centers_x and curr_position.y in centers_y:
+            # not move
             return curr_position
         else:
             # find next move to the goal
             move_x = 1 if goal_x > x else -1
             move_y = 1 if goal_y > y else -1
-            step_x = random_enum(list([range(curr_speed+1)]))
+            step_x = random_enum(list(range(curr_speed+1)))
             step_y = curr_speed - step_x
             x = x + move_x*step_x
             y = y + move_y*step_y
@@ -104,15 +105,15 @@ class Knight(Strategy):
         #index_hp = 0
         highest_sc = 0
         index_sc = 0
-        for i in playerlist:
+        for i,player in enumerate(playerlist):
             if i == my_player_index:
                 continue
-            if chebyshev_distance(state.position,playerlist[i].position) <= state.stat_set.range:
+            if chebyshev_distance(state.position,player.position) <= state.stat_set.range:
                 #if playerlist[i].health < lowest_hp:
                 #    lowest_hp = playerlist[i].health
                 #    index_hp = i
-                if playerlist[i].score > highest_sc:
-                    highest_sc = playerlist[i].score
+                if player.score > highest_sc:
+                    highest_sc = player.score
                     index_sc = i
         #if playerlist[index_hp] <= state.stat_set.damage:
         #    return index_hp

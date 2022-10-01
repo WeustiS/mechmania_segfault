@@ -9,36 +9,36 @@ from util.utility import *
 class Knight(Strategy):    
 
     '''check if at the spawn point'''
-    def isInSpawn(self,game_state:GameState, my_player_index:int) -> bool:
+    def isInSpawn(self,game_state:GameState, my_player_index:int):# -> bool:
         state = self.myState(game_state,my_player_index)
         if my_player_index == 0:
-            if state.position == Position(0,0):
+            if state.position.x == 0 and state.position.y == 0:
                 return True
         elif my_player_index == 1:
-            if state.position == Position(0,9):
+            if state.position.x == 9 and state.position.y == 0:
                 return True
         elif my_player_index == 2:
-            if state.position == Position(9,0):
+            if state.position.x == 9 and state.position.y == 9:
                 return True
         else:
-            if state.position == Position(9,9):
+            if state.position.x == 0 and state.position.y == 9:
                 return True
         return False    
 
     '''check whether or not the given player is in center'''
-    def isInCenter(self, ps:PlayerState) -> bool:
+    def isInCenter(self, ps:PlayerState):# -> bool:
         if ps.position in self.centerlist:
             return True
         return False
 
     '''Return my current player state'''
-    def myState(self, game_state:GameState, my_player_index:int) -> PlayerState:
+    def myState(self, game_state:GameState, my_player_index:int):# -> PlayerState:
         return game_state.player_state_list[my_player_index]
 
     '''Check if there are any other knights on the board
         return true if there is, false if none
     '''
-    def otherKnight(self, game_state:GameState, my_player_index: int) -> bool:
+    def otherKnight(self, game_state:GameState, my_player_index: int):# -> bool:
         playerlist = game_state.player_state_list
         for i in playerlist:
             if i == my_player_index:
@@ -47,20 +47,20 @@ class Knight(Strategy):
                 return True
         return False
     
-    def strategy_initialize(self, my_player_index: int) -> None:
+    def strategy_initialize(self, my_player_index: int):# -> None:
         self.centerlist = [Position(4,4),Position(4,5),Position(5,4),Position(5,5)]
         return CharacterClass.KNIGHT
 
-    def use_action_decision(self, game_state: GameState, my_player_index: int) -> bool:
+    def use_action_decision(self, game_state: GameState, my_player_index: int):# -> bool:
         state = self.myState(game_state,my_player_index)
         #if state.item == Item.SPEED_POTION:
         #    if self.otherKnight(game_state, my_player_index):
         #        return True
         if state.item == Item.HUNTER_SCOPE:
-            return True
+            return False
         return False
 
-    def move_action_decision(self, game_state: GameState, my_player_index: int) -> Position:
+    def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
         curr_state = self.myState(game_state, my_player_index)
         curr_position = curr_state.position
         curr_speed = curr_state.stat_set.speed
@@ -97,7 +97,7 @@ class Knight(Strategy):
             y = y + move_y*step_y
             return Position(x, y)
 
-    def attack_action_decision(self, game_state: GameState, my_player_index: int) -> int:
+    def attack_action_decision(self, game_state: GameState, my_player_index: int):# -> int:
         state = self.myState(game_state, my_player_index)
         playerlist = game_state.player_state_list
         #lowest_hp = 10
@@ -119,7 +119,7 @@ class Knight(Strategy):
         #else:
         return index_sc
 
-    def buy_action_decision(self, game_state: GameState, my_player_index: int) -> Item:
+    def buy_action_decision(self, game_state: GameState, my_player_index: int):# -> Item:
         state = self.myState(game_state, my_player_index)
         if self.isInSpawn(game_state,my_player_index):
             if state.gold >= 8:

@@ -80,7 +80,8 @@ class Knight(Strategy):
         if self.move_idx <= 2 and my.health< my.stat_set.max_health:
             self.got_hit = True
             # self.approach_idx = (self.approach_idx + 1)%3
-            
+        if self.move_idx == 4:
+            self.status = 'holding'
         if self.status == "moving":
             
             curr_pos = game_state.player_state_list[my_player_index].position

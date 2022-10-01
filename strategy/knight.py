@@ -68,7 +68,7 @@ class Knight(Strategy):
     def move_action_decision(self, game_state: GameState, my_player_index: int):# -> Position:
         if self.isInSpawn(game_state,my_player_index) and self.myState(game_state, my_player_index).gold >= 8:
             return self.spawnlist[my_player_index]
-        if isInCenter(game_state.player_state_list[my_player_index]):
+        if self.isInCenter(game_state.player_state_list[my_player_index]):
             self.status = "holding"
             self.move_idx = 0
         if self.status == "moving":

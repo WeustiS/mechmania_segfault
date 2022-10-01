@@ -105,15 +105,15 @@ class Knight(Strategy):
         #index_hp = 0
         highest_sc = 0
         index_sc = 0
-        for i in playerlist:
+        for i,player in enumerate(playerlist):
             if i == my_player_index:
                 continue
-            if chebyshev_distance(state.position,playerlist[i].position) <= state.stat_set.range:
+            if chebyshev_distance(state.position,player.position) <= state.stat_set.range:
                 #if playerlist[i].health < lowest_hp:
                 #    lowest_hp = playerlist[i].health
                 #    index_hp = i
-                if playerlist[i].score > highest_sc:
-                    highest_sc = playerlist[i].score
+                if player.score > highest_sc:
+                    highest_sc = player.score
                     index_sc = i
         #if playerlist[index_hp] <= state.stat_set.damage:
         #    return index_hp

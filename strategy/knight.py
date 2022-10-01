@@ -45,8 +45,6 @@ class Knight(Strategy):
         self.approaches = [
             ['lr', 'd', 'ud', 'd'],
             ['ud', 'd', 'lr', 'd'],
-            ['d', 'ud', 'd', 'lr'],
-            ['d', 'lr', 'd', 'up'],
             ['lr', 'lr', 'ud', 'ud' ],
             ['lr', 'ud', 'lr', 'ud' ]
         ]
@@ -75,7 +73,7 @@ class Knight(Strategy):
             self.status = "moving"
             self.move_idx = 0
             if self.got_hit:
-                self.approach_idx = (self.approach_idx + 1)%6
+                self.approach_idx = (self.approach_idx + 1)%4
             self.got_hit = False
             
         if self.isInCenter(game_state.player_state_list[my_player_index]):

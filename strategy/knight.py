@@ -4,8 +4,7 @@ from game.player_state import PlayerState
 from game.position import Position
 from strategy.strategy import Strategy
 from game.character_class import CharacterClass
-from util.utility import chebyshev_distance
-
+from util.utility import *
 
 class Knight(Strategy):    
 
@@ -64,8 +63,15 @@ class Knight(Strategy):
     def move_action_decision(self, game_state: GameState, my_player_index: int) -> Position:
         curr_state = self.myState(game_state, my_player_index)
         curr_position = curr_state.position
-        centers_x = [4, 5, 5, 4]
-        centers_y = [4, 4, 5, 5]
+        curr_speed = curr_state.stat_set.speed
+        
+        # curr_health = curr_state.health
+        # curr_item = curr_state.item
+        # curr_range = curr_state.stat_set.range 
+        # curr_damage = curr_state.stat_set.damage
+        
+        centers_x = [5, 4, 4, 5]
+        centers_y = [5, 5, 4, 4]
         centers = [Position(x, y) for x,y in zip(centers_x,centers_y)]
         
         x = curr_position.x
@@ -73,13 +79,23 @@ class Knight(Strategy):
         direction_x = [1, -1, -1, 1]
         direction_y = [1, 1, -1, -1]
         
+        goal_x = centers_x[my_player_index]
+        goal_y = centers_y[my_player_index]
+        
         enemies = [game_state.player_state_list[i] for i in range(4) if i != my_player_index]
         other_postions = [enemy.position for enemy in enemies]
 
-        if curr_position in centers:
+        if curr_position == centers[my_player_index] :
             return curr_position
         else:
-            return(Position(x+direction_x[my_player_index], y+direction_y[my_player_index]))
+            # find next move to the goal
+            move_x = 1 if goal_x > x else -1
+            move_y = 1 if goal_y > y else -1
+            step_x = random_enum(list([range(curr_speed+1)]))
+            step_y = curr_speed - step_x
+            x = x + move_x*step_x
+            y = y + move_y*step_y
+            return Position(x, y)
 
     def attack_action_decision(self, game_state: GameState, my_player_index: int) -> int:
         state = self.myState(game_state, my_player_index)
